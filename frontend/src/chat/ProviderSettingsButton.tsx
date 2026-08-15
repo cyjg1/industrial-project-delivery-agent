@@ -25,10 +25,11 @@ const DEFAULT_BASE_URLS: Record<string, string> = {
 
 type ProviderSettingsButtonProps = {
   disabled?: boolean;
+  compact?: boolean;
   onConfigured: () => Promise<void>;
 };
 
-export function ProviderSettingsButton({ disabled, onConfigured }: ProviderSettingsButtonProps) {
+export function ProviderSettingsButton({ disabled, compact = false, onConfigured }: ProviderSettingsButtonProps) {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<RuntimeProviderStatus | null>(null);
   const [form, setForm] = useState<RuntimeProviderConfigInput>({
@@ -109,12 +110,15 @@ export function ProviderSettingsButton({ disabled, onConfigured }: ProviderSetti
     <>
       <Tooltip title="配置评委自己的模型 API">
         <Button
-          type="text"
+          type={compact ? "text" : "default"}
+          size={compact ? undefined : "middle"}
           icon={<ApiOutlined />}
           disabled={disabled}
           aria-label="配置模型 API"
           onClick={showSettings}
-        />
+        >
+          {compact ? null : "填写 API Key"}
+        </Button>
       </Tooltip>
       <Modal
         open={open}
@@ -185,4 +189,3 @@ export function ProviderSettingsButton({ disabled, onConfigured }: ProviderSetti
     </>
   );
 }
-

@@ -124,7 +124,7 @@ export function SenderBar({
         }
         actions={(origin) => (
           <Space size={4}>
-            <ProviderSettingsButton disabled={loading} onConfigured={onProviderConfigured} />
+            <ProviderSettingsButton compact disabled={loading} onConfigured={onProviderConfigured} />
             {mentionItems.length ? (
               <Dropdown
                 trigger={["click"]}

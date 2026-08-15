@@ -2,6 +2,7 @@ import { SunOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import { Button, Select, Tooltip } from "antd";
 import type { StreamConnectionState } from "../api/client";
 import { MessageList } from "../chat/MessageList";
+import { ProviderSettingsButton } from "../chat/ProviderSettingsButton";
 import { QuickStartCards } from "../chat/QuickStartCards";
 import { SenderBar } from "../chat/SenderBar";
 import { ErrorBoundary } from "../components/ErrorBoundary";
@@ -104,6 +105,7 @@ export function MainPane({
           </span>
         </div>
         <div className="main-header-actions">
+          <ProviderSettingsButton disabled={loading} onConfigured={onProviderConfigured} />
           {canGenerateBrief ? (
             <Button type="primary" icon={<SunOutlined />} onClick={onGenerateBrief} loading={loading}>
               生成晨报
