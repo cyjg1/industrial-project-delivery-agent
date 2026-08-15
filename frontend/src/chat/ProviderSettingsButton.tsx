@@ -193,16 +193,16 @@ export function ProviderSettingsButton({ disabled, compact = false, onConfigured
               value={form.model}
               placeholder={
                 form.provider === "volcengine_ark"
-                  ? "请输入方舟控制台中的模型或推理接入点 ID"
-                  : "请输入服务商提供的模型 ID"
+                  ? "请从方舟控制台复制完整的模型或推理接入点 ID"
+                  : "请从服务商控制台复制完整的模型 ID"
               }
               style={{ marginTop: 6 }}
               onChange={(event) => setForm((current) => ({ ...current, model: event.target.value }))}
             />
             <Typography.Text type="secondary" style={{ display: "block", marginTop: 4 }}>
               {modelNeedsInput
-                ? "该服务无法仅凭 API Key 确定模型，此项需要填写。"
-                : `已自动填入常用模型 ${selectedPreset.defaultModel}，如需使用其他模型可修改。`}
+                ? "此项必填。请直接从服务商控制台复制，版本号、大小写和连字符均需完全一致。"
+                : `已自动填入常用模型 ${selectedPreset.defaultModel}。如果账号无法使用，请从服务商控制台复制完整模型 ID 替换，版本号、大小写和连字符均需完全一致。`}
             </Typography.Text>
           </label>
           <label>
