@@ -1,0 +1,12 @@
+.daily-work-records { min-height: 0; overflow: auto; padding: 16px 24px 24px; }
+.daily-work-records > .ant-alert { margin-bottom: 12px; }
+.daily-work-records-scope { color: var(--color-muted); font-size: 12px; }
+.daily-work-record-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.daily-work-record-options { margin: 0; padding-left: 18px; }
+.daily-work-record-options li { margin: 2px 0; overflow-wrap: anywhere; }
+.daily-work-record-empty { color: var(--color-muted); }
+.daily-work-records .ant-select,
+.daily-work-records .ant-picker { width: 100%; }
+@media (max-width: 720px) {
+  .daily-work-records { padding: 12px; }
+}

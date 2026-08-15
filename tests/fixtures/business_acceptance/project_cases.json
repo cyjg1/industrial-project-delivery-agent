@@ -1,0 +1,19 @@
+{
+  "description": "基于用户确认的项目角色、五专业、十五板块和进度颜色口径构造的业务验收材料。",
+  "tasks": [
+    {"id": "raw_product_done", "title": "原料需求方案确认", "owner": "原料负责人", "profession": "product_design", "board": "原料", "status": "done", "start_offset": -20, "due_offset": -2, "progress": 100, "topic": "topic_a", "expected_health": "green"},
+    {"id": "steel_dev_lag", "title": "炼钢生产实绩模块开发", "owner": "炼钢开发", "profession": "software_development", "board": "炼钢", "status": "in_progress", "start_offset": -20, "due_offset": 4, "progress": 20, "topic": "topic_b", "expected_health": "red"},
+    {"id": "quality_test_lag", "title": "质量检验 UAT 进度滞后处理", "owner": "质量测试", "profession": "testing_uat", "board": "质量", "status": "in_progress", "start_offset": -10, "due_offset": 3, "progress": 40, "topic": "topic_a", "expected_health": "red"},
+    {"id": "warehouse_data_missing_due", "title": "仓储库存接口字段映射", "owner": "仓储接口", "profession": "data_integration", "board": "仓储", "status": "in_progress", "start_offset": -5, "due_offset": null, "progress": 50, "topic": "topic_a", "expected_health": "yellow"},
+    {"id": "logistics_go_live_ok", "title": "物流移动端上线切换", "owner": "项目统筹", "profession": "implementation_go_live", "board": "物流", "status": "in_progress", "start_offset": -5, "due_offset": 10, "progress": 70, "topic": "topic_b", "expected_health": "green"},
+    {"id": "pmo_resource", "title": "跨板块资源调配与决策", "owner": "项目统筹", "profession": "product_design", "board": "成本", "status": "in_progress", "start_offset": -4, "due_offset": 8, "progress": 40, "topic": "topic_b", "expected_health": "green"},
+    {"id": "topic_dependency", "title": "原料专题外部输入协调", "owner": "专题负责人", "profession": "product_design", "board": "原料", "status": "in_progress", "start_offset": -8, "due_offset": 5, "progress": 70, "topic": "topic_a", "expected_health": "green"},
+    {"id": "exec_today", "title": "执行人员今日完成冷轧页面开发", "owner": "执行人员", "profession": "software_development", "board": "冷轧", "status": "in_progress", "start_offset": -2, "due_offset": 1, "progress": 60, "topic": "topic_a", "expected_health": "green"},
+    {"id": "unclassified", "title": "整理临时事项", "owner": "", "profession": "", "board": "", "status": "open", "start_offset": -1, "due_offset": null, "progress": 0, "topic": "topic_b", "expected_health": "yellow"}
+  ],
+  "inspection_items": [
+    {"id": "quality_issue", "category": "issue", "title": "质量检验规则未闭环", "owner": "", "status": "candidate", "due_offset": 2, "board": "质量", "linked_tasks": []},
+    {"id": "quality_method", "category": "method", "title": "质量缺陷日清方法", "owner": "质量测试", "status": "confirmed", "due_offset": null, "board": "质量", "linked_tasks": []},
+    {"id": "raw_issue_closed", "category": "issue", "title": "原料编码问题已确认", "owner": "原料负责人", "status": "confirmed", "due_offset": -1, "board": "原料", "linked_tasks": ["work_raw_product_done"]}
+  ]
+}

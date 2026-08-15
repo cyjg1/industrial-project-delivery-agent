@@ -1,0 +1,103 @@
+.review-list .ant-list-items {
+  display: grid;
+  gap: 16px;
+}
+
+.review-list .ant-list-item {
+  padding: 0;
+  border-block-end: 0;
+}
+
+.review-card {
+  width: 100%;
+}
+
+.review-card .ant-card-body {
+  display: grid;
+  gap: 16px;
+  padding-block: 16px 18px;
+}
+
+.review-task-details .ant-descriptions-item-label {
+  width: 104px;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-sunken);
+}
+
+.review-task-details .ant-descriptions-item-content {
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.review-understanding {
+  line-height: 1.7;
+}
+
+.review-understanding {
+  margin: 0;
+}
+
+.review-actions {
+  padding-top: 2px;
+}
+
+.review-task-edit-form {
+  padding-top: 8px;
+}
+
+.review-task-edit-modal .ant-modal-body {
+  height: 580px;
+  overflow: hidden;
+}
+
+.review-task-edit-form .ant-form-item {
+  margin-bottom: 10px;
+}
+
+.review-edit-field-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-edit-field-label em {
+  color: var(--color-warning);
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.review-field-needs-confirmation .ant-input,
+.review-field-needs-confirmation .ant-picker,
+.review-field-needs-confirmation .ant-select-selector {
+  border-color: color-mix(in srgb, var(--color-warning) 35%, var(--color-border)) !important;
+  background: color-mix(in srgb, var(--color-warning-soft) 35%, var(--color-surface)) !important;
+}
+
+.review-field-needs-confirmation .ant-input:focus,
+.review-field-needs-confirmation .ant-picker-focused,
+.review-field-needs-confirmation .ant-select-focused .ant-select-selector {
+  border-color: color-mix(in srgb, var(--color-warning) 55%, var(--color-border)) !important;
+}
+
+.review-owner-select .ant-select-selector {
+  max-height: 72px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  align-items: flex-start;
+}
+
+.review-due-date-picker {
+  width: 100%;
+}
+
+.review-owner-select .ant-select-selection-overflow {
+  align-content: flex-start;
+}
+
+@media (max-width: 720px) {
+  .review-task-details .ant-descriptions-item-label {
+    width: 88px;
+  }
+}

@@ -1,0 +1,396 @@
+.knowledge-flow-section {
+  padding: 4px 0;
+}
+
+.knowledge-flow-section .knowledge-flow-intro h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.knowledge-flow-section .knowledge-flow-intro p {
+  margin: 0 0 16px;
+  max-width: 78ch;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
+
+.knowledge-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.knowledge-stage {
+  position: relative;
+  min-width: 0;
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+}
+
+.knowledge-stage-processing {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+}
+
+.knowledge-stage-success {
+  border-color: var(--color-success);
+  background: var(--color-success-soft);
+}
+
+.knowledge-stage-index {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-stage-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-secondary);
+}
+
+.knowledge-stage-head strong {
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.knowledge-stage-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 10px 0 6px;
+}
+
+.knowledge-stage-value b {
+  font-size: 28px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-stage-value span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.knowledge-stage-caption {
+  margin: 0 0 4px;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.knowledge-stage-detail {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.knowledge-method-cell {
+  display: grid;
+  gap: 2px;
+}
+
+.knowledge-method-cell small {
+  color: var(--color-text-tertiary);
+}
+
+.knowledge-evidence-ok {
+  color: var(--color-success);
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-evidence-weak {
+  color: var(--color-warning);
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-gate-failures {
+  color: var(--color-warning);
+  line-height: 1.6;
+}
+
+.knowledge-evolution {
+  display: grid;
+  gap: 16px;
+  padding: 18px 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.knowledge-evolution-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.knowledge-evolution-head h3,
+.knowledge-evolution h4 {
+  margin: 0;
+}
+
+.knowledge-evolution-head h3 {
+  font-size: 16px;
+}
+
+.knowledge-evolution-head p {
+  margin: 4px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.knowledge-evolution-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.knowledge-evolution-metric {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 12px 14px;
+  border-right: 1px solid var(--color-border);
+}
+
+.knowledge-evolution-metric:last-child {
+  border-right: 0;
+}
+
+.knowledge-evolution-metric span,
+.knowledge-evolution-metric small {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.knowledge-evolution-metric strong {
+  font-size: 24px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.knowledge-evolution-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: 20px;
+}
+
+.knowledge-evolution-grid > div {
+  min-width: 0;
+}
+
+.knowledge-evolution-grid h4,
+.knowledge-reliability h4 {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.knowledge-value-positive {
+  color: var(--color-success);
+}
+
+.knowledge-value-negative {
+  color: var(--color-danger);
+}
+
+.knowledge-reliability {
+  display: grid;
+  gap: 8px;
+}
+
+.knowledge-reliability > div {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto 54px 130px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.knowledge-reliability span,
+.knowledge-reliability small {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.knowledge-method-detail {
+  display: grid;
+  gap: 16px;
+  padding: 8px 12px 12px 44px;
+}
+
+.knowledge-method-detail .ant-descriptions-item-content {
+  white-space: pre-line;
+}
+
+.knowledge-evidence-list {
+  display: grid;
+  gap: 8px;
+}
+
+.knowledge-evidence-list h5 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.knowledge-evidence-row {
+  padding: 10px 12px;
+  border-left: 3px solid var(--color-border);
+  background: var(--color-surface-sunken);
+}
+
+.knowledge-evidence-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.knowledge-evidence-heading span {
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+}
+
+.knowledge-evidence-row blockquote {
+  margin: 8px 0;
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+.knowledge-evidence-row p {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.knowledge-skill-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.knowledge-skill-groups h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+}
+
+.knowledge-skill-groups > div > p {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.knowledge-skill-groups code {
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  font-size: 12px;
+}
+
+.knowledge-skill-list,
+.knowledge-contract-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.knowledge-skill-item {
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.knowledge-skill-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.knowledge-skill-item p {
+  margin: 8px 0 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.knowledge-skill-tools {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.knowledge-contract-list {
+  max-height: 420px;
+  overflow-y: auto;
+  gap: 6px;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+.knowledge-contract-list li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.knowledge-contract-name {
+  min-width: 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 920px) {
+  .knowledge-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .knowledge-skill-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .knowledge-evolution-metrics,
+  .knowledge-evolution-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .knowledge-evolution-metric {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .knowledge-evolution-metric:last-child {
+    border-bottom: 0;
+  }
+
+  .knowledge-reliability > div {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .knowledge-method-detail {
+    padding-left: 0;
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "metadata": {
+    "synthetic": true,
+    "notice": "All organizations, people, projects, dates, tasks, and events in this dataset are fictional.",
+    "seed_version": "1.0"
+  },
+  "organization": {
+    "id": "org_mvp",
+    "name": "示例制造企业"
+  },
+  "project": {
+    "id": "project_mvp",
+    "name": "星河钢铁协同平台演示项目",
+    "owner_id": "u_pm"
+  },
+  "users": [
+    {"id": "u_pm", "name": "项目经理A", "role": "pm", "manager_id": null},
+    {"id": "u_pmo", "name": "PMO协调A", "role": "pmo", "manager_id": "u_pm"},
+    {"id": "u_professional", "name": "专业统筹A", "role": "professional_lead", "manager_id": "u_pmo"},
+    {"id": "u_topic_lead", "name": "物流负责人A", "role": "topic_lead", "manager_id": "u_professional"},
+    {"id": "u_quality", "name": "质量负责人A", "role": "topic_lead", "manager_id": "u_professional"},
+    {"id": "u_exec", "name": "实施工程师A", "role": "exec", "manager_id": "u_topic_lead"},
+    {"id": "u_test", "name": "测试工程师A", "role": "exec", "manager_id": "u_quality"}
+  ],
+  "topics": [
+    {"id": "topic_logistics", "name": "物流协同", "owner_id": "u_topic_lead", "members": ["u_pm", "u_pmo", "u_professional", "u_topic_lead", "u_exec"]},
+    {"id": "topic_quality", "name": "质量与UAT", "owner_id": "u_quality", "members": ["u_pm", "u_pmo", "u_professional", "u_quality", "u_test"]}
+  ],
+  "milestone": {
+    "id": "demo_uat_release",
+    "name": "集成测试与上线准备",
+    "scenario_id": "DEMO-UAT",
+    "chain_name": "采购到货 / 门禁计量 / 质检入库 / 数据回写",
+    "start_offset": -14,
+    "end_offset": 28,
+    "acceptance_criteria": [
+      "关键任务必须有责任人、截止日期、交付物和验收口径",
+      "风险与结论必须能追溯到虚构演示材料",
+      "候选事项经过人工确认后才能进入正式任务池",
+      "不得把示例行业知识当作当前项目已发生事实"
+    ]
+  },
+  "meetings": [
+    {"id": "demo_meeting_kickoff", "file": "meeting_01_kickoff.md", "title": "演示项目集成测试启动会", "topic": "范围与责任确认", "date_offset": -10, "topic_id": "topic_logistics"},
+    {"id": "demo_meeting_interface", "file": "meeting_02_interface.md", "title": "演示项目接口联调会", "topic": "接口字段与异常处理", "date_offset": -5, "topic_id": "topic_logistics"},
+    {"id": "demo_meeting_uat", "file": "meeting_03_uat.md", "title": "演示项目UAT准备会", "topic": "测试证据与准入条件", "date_offset": -2, "topic_id": "topic_quality"}
+  ],
+  "tasks": [
+    {"id": "demo_task_scope", "title": "确认集成测试范围", "description": "整理物流与质量两个专题的测试边界，明确本轮覆盖和暂缓内容。", "owner": "PMO协调A", "topic_id": "topic_logistics", "board": "PMO", "profession": "product_design", "start_offset": -12, "due_offset": -7, "progress": 100, "status": "done", "deliverable": "集成测试范围清单", "acceptance": "两个专题负责人确认范围及排除项", "source_id": "demo_meeting_kickoff"},
+    {"id": "demo_task_mapping", "title": "完成到货接口字段映射", "description": "逐项核对订单、车辆、计量和批次字段的来源、去向及空值处理。", "owner": "实施工程师A", "topic_id": "topic_logistics", "board": "物流", "profession": "data_integration", "start_offset": -8, "due_offset": 3, "progress": 55, "status": "in_progress", "deliverable": "字段映射表V1", "acceptance": "必填字段、码表和异常值均有处理说明", "source_id": "demo_meeting_interface"},
+    {"id": "demo_task_retry", "title": "补充接口失败重试方案", "description": "定义超时、重复报文和下游不可用时的重试与人工补偿动作。", "owner": "物流负责人A", "topic_id": "topic_logistics", "board": "物流", "profession": "software_development", "start_offset": -4, "due_offset": 5, "progress": 30, "status": "in_progress", "deliverable": "异常处理方案", "acceptance": "至少覆盖超时、重复和下游不可用三类场景", "source_id": "demo_meeting_interface"},
+    {"id": "demo_task_uat_cases", "title": "编制端到端UAT用例", "description": "按正常、边界和异常路径编制可执行用例，并绑定输入数据和预期结果。", "owner": "测试工程师A", "topic_id": "topic_quality", "board": "质量", "profession": "testing_uat", "start_offset": -3, "due_offset": 7, "progress": 40, "status": "in_progress", "deliverable": "UAT用例集", "acceptance": "每条用例包含前置条件、步骤、预期结果和证据位置", "source_id": "demo_meeting_uat"},
+    {"id": "demo_task_sample_data", "title": "准备脱敏测试数据", "description": "生成不对应任何真实客户、订单或车辆的测试样例，覆盖关键校验规则。", "owner": "质量负责人A", "topic_id": "topic_quality", "board": "质量", "profession": "testing_uat", "start_offset": -2, "due_offset": 4, "progress": 20, "status": "in_progress", "deliverable": "合成测试数据包", "acceptance": "数据声明为虚构且覆盖正常、缺失、重复和越界值", "source_id": "demo_meeting_uat"},
+    {"id": "demo_task_evidence", "title": "建立测试证据归档规则", "description": "约定截图、日志、结果文件和缺陷记录的命名及归档位置。", "owner": "PMO协调A", "topic_id": "topic_quality", "board": "PMO", "profession": "implementation_go_live", "start_offset": 0, "due_offset": 9, "progress": 0, "status": "open", "deliverable": "测试证据归档指引", "acceptance": "抽查任一用例可定位输入、执行人、结果和缺陷", "source_id": "demo_meeting_uat"},
+    {"id": "demo_task_cutover", "title": "形成上线切换检查表", "description": "汇总数据准备、接口启停、人员值守和回退条件。", "owner": "项目经理A", "topic_id": "topic_logistics", "board": "PMO", "profession": "implementation_go_live", "start_offset": 8, "due_offset": 20, "progress": 0, "status": "open", "deliverable": "上线切换检查表", "acceptance": "所有检查项均有责任人、执行时点和回退动作", "source_id": "demo_meeting_kickoff"}
+  ],
+  "issues": [
+    {"id": "demo_issue_source", "title": "车辆主数据来源尚未确认", "description": "会议只确认了字段名称，尚未确认权威来源和更新频率。", "owner": "物流负责人A", "topic_id": "topic_logistics", "board": "物流", "due_offset": 2, "source_id": "demo_meeting_interface"},
+    {"id": "demo_issue_evidence", "title": "异常场景缺少预期证据", "description": "部分异常用例尚未定义需要保留的日志和业务结果。", "owner": "质量负责人A", "topic_id": "topic_quality", "board": "质量", "due_offset": 6, "source_id": "demo_meeting_uat"},
+    {"id": "demo_issue_owner", "title": "上线值守责任人待确认", "description": "切换窗口中的业务确认和技术值守尚未落实到具体演示角色。", "owner": "", "topic_id": "topic_logistics", "board": "PMO", "due_offset": 14, "source_id": "demo_meeting_kickoff"}
+  ],
+  "methods": [
+    {"id": "demo_method_trace", "title": "字段来源去向样例校验法", "description": "对关键字段同时记录来源、转换、去向和可复核样例，避免只核对字段名称。", "topic_id": "topic_logistics", "source_id": "demo_meeting_interface"},
+    {"id": "demo_method_uat", "title": "UAT证据四联单", "description": "每条关键用例绑定输入数据、执行记录、结果证据和缺陷闭环。", "topic_id": "topic_quality", "source_id": "demo_meeting_uat"}
+  ]
+}
+

@@ -1,0 +1,30 @@
+{
+  "asset_id": "synthetic_default_people",
+  "source": {
+    "type": "synthetic_demo",
+    "path": "",
+    "status": "canonical_people_asset",
+    "accepted_update_channels": ["manual"],
+    "notes": "Fictional role-based fallback asset for tests and first-run diagnostics."
+  },
+  "people_structure": {
+    "root_title": "示例项目组织结构",
+    "groups": [
+      {"name": "PMO", "path": "示例项目 / PMO"},
+      {"name": "总体组", "path": "示例项目 / 总体组"},
+      {"name": "物流", "path": "示例项目 / 物流"},
+      {"name": "质量", "path": "示例项目 / 质量"}
+    ],
+    "people": [
+      {"name": "项目经理A", "group": "PMO", "role": "项目经理", "path": "示例项目 / PMO / 项目经理A", "responsibility_note": "项目总体决策"},
+      {"name": "PMO协调A", "group": "PMO", "role": "PMO", "path": "示例项目 / PMO / PMO协调A", "responsibility_note": "计划、风险和证据治理"},
+      {"name": "专业统筹A", "group": "总体组", "role": "专业统筹", "path": "示例项目 / 总体组 / 专业统筹A", "responsibility_note": "跨专题一致性"},
+      {"name": "物流负责人A", "group": "物流", "role": "专题负责人", "path": "示例项目 / 物流 / 物流负责人A", "responsibility_note": "物流流程与接口"},
+      {"name": "实施工程师A", "group": "物流", "role": "实施人员", "path": "示例项目 / 物流 / 实施工程师A", "responsibility_note": "接口开发和字段映射"},
+      {"name": "质量负责人A", "group": "质量", "role": "专题负责人", "path": "示例项目 / 质量 / 质量负责人A", "responsibility_note": "质量规则与UAT"},
+      {"name": "测试工程师A", "group": "质量", "role": "测试人员", "path": "示例项目 / 质量 / 测试工程师A", "responsibility_note": "测试执行与证据"}
+    ],
+    "scenarios": []
+  }
+}
+

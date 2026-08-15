@@ -1,0 +1,19 @@
+.project-files-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px; min-height: 0; }
+.project-files-sidebar, .project-files-main { border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-surface); }
+.project-files-sidebar { padding: 14px; }
+.project-files-sidebar-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.project-folder-list { display: grid; gap: 4px; max-height: 560px; overflow: auto; }
+.project-folder-button { width: 100%; border: 0; border-radius: 8px; padding: 8px 10px; background: transparent; color: var(--color-text); text-align: left; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.project-folder-button:hover, .project-folder-button.active { background: var(--color-primary-soft); color: var(--color-primary); }
+.project-files-main { min-width: 0; padding: 16px; }
+.project-files-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.project-files-toolbar-title { min-width: 0; }
+.project-files-toolbar-title h2 { margin: 0; font-size: 18px; }
+.project-files-toolbar-title span { color: var(--color-text-secondary); font-size: 12px; }
+.project-files-actions { display: flex; gap: 8px; }
+.project-files-summary { margin-bottom: 16px; }
+.project-file-name { min-width: 0; }
+.project-file-name strong, .project-file-name small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.project-file-name small { margin-top: 3px; color: var(--color-text-secondary); }
+.project-upload-files { display: grid; gap: 6px; margin-top: 8px; color: var(--color-text-secondary); font-size: 12px; }
+@media (max-width: 920px) { .project-files-layout { grid-template-columns: 1fr; } .project-files-sidebar { max-height: 180px; } .project-files-toolbar { align-items: flex-start; flex-direction: column; } }

@@ -1,0 +1,43 @@
+{
+  "methodology": {
+    "definition": "跨会议提炼甲方反复践行的逻辑、原则、管理理论及其对数据和功能的要求",
+    "required_fields": ["name", "business_goal", "principles", "reasoning_chain", "applicable_scope", "evidence_refs"],
+    "human_confirmation_required": true
+  },
+  "matter_taxonomy": {
+    "primary": ["design", "function", "architecture"],
+    "facets": ["decision", "risk", "dependency", "problem", "task", "fact"]
+  },
+  "task_contract": {
+    "required_fields": ["owner", "due_date", "deliverable", "acceptance_criteria"],
+    "not_required": ["priority", "dependency"],
+    "missing_value_policy": "infer a concrete proposal when reasonable and mark it for human confirmation"
+  },
+  "responsibility": {
+    "canonical_source": "data/assets/people_structure.json",
+    "primary_owner_rule": "the overall team lead responsible for the matter is primary owner",
+    "participant_rule": "all listed business sections share responsibility",
+    "ordering_matters": false
+  },
+  "evidence": {
+    "raw_transcript_required": true,
+    "curated_notes_are_navigation": true,
+    "quote_must_exist_in_selected_source": true,
+    "missing_raw_policy": "surface an evidence gap and keep the conclusion candidate"
+  },
+  "inference": {
+    "autonomy": "high",
+    "show_reasoning_summary": true,
+    "human_feedback_has_highest_authority": true
+  },
+  "conflicts": {
+    "auto_resolve": false,
+    "policy": "keep related items side by side and request human judgment"
+  },
+  "completion": {
+    "valid": ["actionable conclusion awaiting human confirmation or dispatch", "concrete gap converted into a human-resolvable next step"],
+    "invalid": ["empty description", "meeting quote without deeper analysis", "finding with no evidence trace"],
+    "allow_zero_gaps": true,
+    "verification_gate_before_candidate_memory": true
+  }
+}

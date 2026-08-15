@@ -1,0 +1,33 @@
+{
+  "asset_id": "business_acceptance_people",
+  "source": {
+    "type": "synthetic_acceptance_fixture",
+    "path": "",
+    "status": "test_only",
+    "accepted_update_channels": ["manual"],
+    "notes": "基于项目管理 Agent 已确认角色与板块口径构造，仅用于隔离验收测试。"
+  },
+  "people_structure": {
+    "root_title": "项目管理 Agent 业务验收项目组",
+    "groups": [
+      {"name": "PMO", "path": "项目 / PMO"},
+      {"name": "专业统筹", "path": "项目 / 专业统筹"},
+      {"name": "原料", "path": "项目 / 原料"},
+      {"name": "炼钢", "path": "项目 / 炼钢"},
+      {"name": "质量", "path": "项目 / 质量"},
+      {"name": "仓储", "path": "项目 / 仓储"},
+      {"name": "场景联调组", "path": "项目 / 场景联调组"}
+    ],
+    "people": [
+      {"name": "项目统筹", "group": "PMO", "role": "项目经理", "path": "项目 / PMO / 项目统筹", "responsibility_note": "项目全景、进度和资源调配"},
+      {"name": "技术总师", "group": "专业统筹", "role": "技术负责人", "path": "项目 / 专业统筹 / 技术负责人 / 技术总师", "responsibility_note": "开发规范和跨板块技术统筹"},
+      {"name": "原料负责人", "group": "原料", "role": "专题负责人", "path": "项目 / 原料 / 原料负责人", "responsibility_note": "原料板块实施管理"},
+      {"name": "炼钢开发", "group": "炼钢", "role": "开发人员", "path": "项目 / 炼钢 / 炼钢开发", "responsibility_note": "炼钢功能开发"},
+      {"name": "质量测试", "group": "质量", "role": "测试人员", "path": "项目 / 质量 / 质量测试", "responsibility_note": "质量板块 UAT"},
+      {"name": "仓储接口", "group": "仓储", "role": "数据人员", "path": "项目 / 仓储 / 仓储接口", "responsibility_note": "仓储接口联调"},
+      {"name": "执行人员", "group": "冷轧", "role": "开发人员", "path": "项目 / 冷轧 / 执行人员", "responsibility_note": "完成本人开发任务"},
+      {"name": "归属待确认", "group": "场景联调组", "role": "成员", "path": "项目 / 场景联调组 / 归属待确认", "responsibility_note": "分组尚未确认"}
+    ],
+    "scenarios": []
+  }
+}
