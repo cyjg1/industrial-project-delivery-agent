@@ -32,6 +32,27 @@ DATASET_PATH = PROJECT_ROOT / "demo" / "demo_dataset.json"
 FIXTURE_DIR = PROJECT_ROOT / "demo" / "fixtures"
 STORE_DIR = PROJECT_ROOT / "data" / "store"
 
+REVIEW_TASK_OVERRIDES = {
+    "demo_issue_source": {
+        "title": "确认车辆主数据权威来源",
+        "description": "核实车辆主数据的权威系统、更新频率和维护责任角色，并形成可追溯记录。",
+        "deliverable": "车辆主数据来源确认记录",
+        "acceptance": "明确权威系统、更新频率、维护责任角色和确认依据。",
+    },
+    "demo_issue_evidence": {
+        "title": "补全异常场景预期证据",
+        "description": "为超时、重复报文和下游不可用场景补充需要留存的技术与业务证据。",
+        "deliverable": "异常场景预期证据清单",
+        "acceptance": "每个异常场景均列明接口日志、业务结果和证据归档位置。",
+    },
+    "demo_issue_owner": {
+        "title": "落实上线窗口值守责任人",
+        "description": "补齐上线切换窗口中的业务确认、技术值守和异常升级责任。",
+        "deliverable": "上线窗口值守责任表",
+        "acceptance": "业务确认、技术值守和升级联系人均有明确角色及值守时间。",
+    },
+}
+
 
 def initialize_demo(store_dir: str | Path = STORE_DIR) -> dict[str, Any]:
     dataset = json.loads(DATASET_PATH.read_text(encoding="utf-8"))
@@ -237,10 +258,14 @@ def _seed_items(
         )
         published += 1
 
+    # These rows represent meeting follow-ups awaiting PMO review. Keep them as
+    # task candidates so the public demo exercises the real editable task flow
+    # (edit, publish, or delete) instead of the simpler issue confirm/reject UI.
     for row in dataset["issues"]:
+        review_task = {**row, **REVIEW_TASK_OVERRIDES.get(row["id"], {})}
         store.ingest(
-            _item_from_row(row, "issue", today, CandidateStatus.CANDIDATE),
-            tags=_tags(author_id="u_pmo", topic_id=row["topic_id"]),
+            _item_from_row(review_task, "task", today, CandidateStatus.CANDIDATE),
+            tags=_tags(author_id="u_pmo", topic_id=review_task["topic_id"]),
             actor={"id": "u_pmo"},
             materialize=False,
             tag_origin="synthetic_demo",
@@ -265,6 +290,15 @@ def _item_from_row(
 ) -> InspectionItem:
     source_id = row["source_id"]
     quote = f"Synthetic demo evidence for {row['title']}"
+    observed_fields = ["title", "description"]
+    if row.get("owner"):
+        observed_fields.append("owner_candidates")
+    if "due_offset" in row:
+        observed_fields.append("due_date")
+    if row.get("deliverable"):
+        observed_fields.append("deliverable")
+    if row.get("acceptance"):
+        observed_fields.append("acceptance_criteria")
     return InspectionItem(
         item_id=row["id"],
         category=category,
@@ -284,6 +318,7 @@ def _item_from_row(
         due_date=_offset_date(today, row["due_offset"]) if "due_offset" in row else None,
         deliverable=row.get("deliverable"),
         acceptance_criteria=row.get("acceptance"),
+        observed_fields=observed_fields,
         professional_id=row.get("profession", ""),
         board_id=row.get("board", ""),
         org_id="org_mvp",
@@ -317,4 +352,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

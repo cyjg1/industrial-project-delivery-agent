@@ -45,6 +45,10 @@ class CompetitionDemoTest(unittest.TestCase):
             self.assertIn("星河钢铁协同平台演示项目", str(payload))
             self.assertIn("synthetic_demo", str(payload))
             self.assertEqual(len(payload["confirmation_cards"]), 3)
+            self.assertEqual(
+                {card["category"] for card in payload["confirmation_cards"]},
+                {"task"},
+            )
             self.assertTrue(named_pmo_workspaces)
             self.assertTrue(
                 all(len(workspace["confirmation_cards"]) == 3 for workspace in named_pmo_workspaces)
