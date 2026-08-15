@@ -32,9 +32,25 @@ _BASE_URL_ENV_NAMES = (
     "GLM_BASE_URL",
 )
 _SUPPORTED_PROVIDERS = {"openai", "glm", "openai_compatible"}
+_SERVICE_TO_PROVIDER = {
+    "aliyun_bailian": "openai_compatible",
+    "volcengine_ark": "openai_compatible",
+    "deepseek": "openai_compatible",
+    "glm": "glm",
+    "openai_compatible": "openai_compatible",
+    "openai": "openai",
+}
 _DEFAULT_BASE_URLS = {
     "glm": "https://open.bigmodel.cn/api/paas/v4",
     "openai_compatible": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+}
+_SERVICE_DEFAULT_BASE_URLS = {
+    "aliyun_bailian": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    "volcengine_ark": "https://ark.cn-beijing.volces.com/api/v3",
+    "deepseek": "https://api.deepseek.com",
+    "glm": _DEFAULT_BASE_URLS["glm"],
+    "openai_compatible": "",
+    "openai": "",
 }
 
 
@@ -44,14 +60,20 @@ class RuntimeProviderConfigurationError(ValueError):
 
 def runtime_provider_status() -> dict[str, Any]:
     provider = _normalize_provider(os.getenv("LLM_PROVIDER", ""), allow_empty=True)
+    service = _normalize_service(
+        os.getenv("RUNTIME_PROVIDER_SERVICE", "") or provider,
+        allow_empty=True,
+    )
     model = _current_model(provider)
     return {
-        "provider": provider,
+        "provider": service,
         "model": model,
-        "base_url": _current_base_url(provider),
+        "base_url": _current_base_url(provider, service),
         "api_surface": os.getenv("OPENAI_COMPAT_API_SURFACE", "chat_completions"),
         "api_key_configured": bool(_current_api_key(provider)),
-        "configured": bool(provider in _SUPPORTED_PROVIDERS and model and _current_api_key(provider)),
+        "configured": bool(
+            provider in _SUPPORTED_PROVIDERS and model and _current_api_key(provider)
+        ),
         "persistence": "process_memory",
     }
 
@@ -64,11 +86,14 @@ def configure_runtime_provider(
     base_url: str = "",
     api_surface: str = "chat_completions",
 ) -> dict[str, Any]:
-    normalized = _normalize_provider(provider)
+    service = _normalize_service(provider)
+    normalized = _SERVICE_TO_PROVIDER[service]
     clean_model = _required_text(model, "model", max_length=200)
     clean_key = api_key.strip()
     clean_surface = _normalize_surface(api_surface)
-    clean_base_url = _validated_base_url(base_url or _DEFAULT_BASE_URLS.get(normalized, ""))
+    clean_base_url = _validated_base_url(
+        base_url or _SERVICE_DEFAULT_BASE_URLS.get(service, "")
+    )
 
     with _LOCK:
         existing_key = _current_api_key(normalized)
@@ -81,6 +106,7 @@ def configure_runtime_provider(
             os.environ.pop(name, None)
 
         os.environ["LLM_PROVIDER"] = normalized
+        os.environ["RUNTIME_PROVIDER_SERVICE"] = service
         os.environ["AGENT_MAIN_MODEL"] = clean_model
         os.environ["AGENT_FAST_MODEL"] = clean_model
         os.environ["AGENT_CONVERSATION_MODELS"] = clean_model
@@ -107,6 +133,7 @@ def clear_runtime_provider() -> dict[str, Any]:
     with _LOCK:
         for name in (
             "LLM_PROVIDER",
+            "RUNTIME_PROVIDER_SERVICE",
             "OPENAI_COMPAT_API_SURFACE",
             *_SECRET_ENV_NAMES,
             *_MODEL_ENV_NAMES,
@@ -140,6 +167,29 @@ def _normalize_provider(provider: str, *, allow_empty: bool = False) -> str:
     if normalized not in _SUPPORTED_PROVIDERS:
         raise RuntimeProviderConfigurationError(
             "Unsupported provider. Use openai, glm, or openai_compatible."
+        )
+    return normalized
+
+
+def _normalize_service(service: str, *, allow_empty: bool = False) -> str:
+    normalized = service.strip().lower().replace("-", "_")
+    aliases = {
+        "aliyun": "aliyun_bailian",
+        "bailian": "aliyun_bailian",
+        "dashscope": "aliyun_bailian",
+        "ark": "volcengine_ark",
+        "volcengine": "volcengine_ark",
+        "zhipu": "glm",
+        "compatible": "openai_compatible",
+        "openai_compatible_chat": "openai_compatible",
+    }
+    normalized = aliases.get(normalized, normalized)
+    if allow_empty and normalized in {"", "mock"}:
+        return ""
+    if normalized not in _SERVICE_TO_PROVIDER:
+        raise RuntimeProviderConfigurationError(
+            "Unsupported provider. Use aliyun_bailian, volcengine_ark, glm, "
+            "deepseek, or openai_compatible."
         )
     return normalized
 
@@ -212,13 +262,13 @@ def _current_model(provider: str) -> str:
     return ""
 
 
-def _current_base_url(provider: str) -> str:
+def _current_base_url(provider: str, service: str = "") -> str:
     if provider == "glm":
         return os.getenv("GLM_BASE_URL", "").strip() or _DEFAULT_BASE_URLS["glm"]
     if provider == "openai_compatible":
         return (
             os.getenv("OPENAI_COMPAT_BASE_URL", "").strip()
+            or _SERVICE_DEFAULT_BASE_URLS.get(service, "")
             or _DEFAULT_BASE_URLS["openai_compatible"]
         )
     return ""
-

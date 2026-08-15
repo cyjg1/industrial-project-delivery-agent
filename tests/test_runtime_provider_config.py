@@ -13,6 +13,7 @@ from agent.runtime_provider_config import (
 
 RUNTIME_ENV = {
     "LLM_PROVIDER": "",
+    "RUNTIME_PROVIDER_SERVICE": "",
     "OPENAI_API_KEY": "",
     "OPENAI_COMPAT_API_KEY": "",
     "DASHSCOPE_API_KEY": "",
@@ -63,6 +64,21 @@ class RuntimeProviderConfigTest(unittest.TestCase):
             self.assertTrue(status["api_key_configured"])
             self.assertNotIn("private-key", repr(status))
 
+    def test_domestic_service_preset_is_preserved_while_using_compatible_provider(self):
+        with patch.dict(os.environ, RUNTIME_ENV, clear=False):
+            status = configure_runtime_provider(
+                provider="volcengine_ark",
+                model="reviewer-endpoint-id",
+                api_key="private-key",
+            )
+
+            self.assertEqual(status["provider"], "volcengine_ark")
+            self.assertEqual(os.environ["LLM_PROVIDER"], "openai_compatible")
+            self.assertEqual(
+                status["base_url"],
+                "https://ark.cn-beijing.volces.com/api/v3",
+            )
+
     def test_remote_plain_http_and_embedded_credentials_are_rejected(self):
         with patch.dict(os.environ, RUNTIME_ENV, clear=False):
             with self.assertRaises(RuntimeProviderConfigurationError):
@@ -111,4 +127,3 @@ class RuntimeProviderConfigTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

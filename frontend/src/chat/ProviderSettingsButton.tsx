@@ -11,17 +11,44 @@ import {
 import type { RuntimeProviderConfigInput, RuntimeProviderStatus } from "../types";
 
 
-const PROVIDERS = [
-  { label: "OpenAI", value: "openai" },
-  { label: "智谱 GLM", value: "glm" },
-  { label: "OpenAI Compatible", value: "openai_compatible" },
-];
+const PROVIDER_PRESETS = [
+  {
+    label: "阿里云百炼",
+    value: "aliyun_bailian",
+    defaultModel: "qwen-plus",
+    baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  },
+  {
+    label: "火山引擎方舟",
+    value: "volcengine_ark",
+    defaultModel: "",
+    baseUrl: "https://ark.cn-beijing.volces.com/api/v3",
+  },
+  {
+    label: "智谱开放平台",
+    value: "glm",
+    defaultModel: "glm-4-flash",
+    baseUrl: "https://open.bigmodel.cn/api/paas/v4",
+  },
+  {
+    label: "DeepSeek 开放平台",
+    value: "deepseek",
+    defaultModel: "deepseek-v4-flash",
+    baseUrl: "https://api.deepseek.com",
+  },
+  {
+    label: "其他 OpenAI 兼容服务",
+    value: "openai_compatible",
+    defaultModel: "",
+    baseUrl: "",
+  },
+] as const;
 
-const DEFAULT_BASE_URLS: Record<string, string> = {
-  openai: "",
-  glm: "https://open.bigmodel.cn/api/paas/v4",
-  openai_compatible: "https://dashscope.aliyuncs.com/compatible-mode/v1",
-};
+const PROVIDERS = PROVIDER_PRESETS.map(({ label, value }) => ({ label, value }));
+
+function findPreset(provider: string) {
+  return PROVIDER_PRESETS.find((item) => item.value === provider) ?? PROVIDER_PRESETS[0];
+}
 
 type ProviderSettingsButtonProps = {
   disabled?: boolean;
@@ -33,10 +60,10 @@ export function ProviderSettingsButton({ disabled, compact = false, onConfigured
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<RuntimeProviderStatus | null>(null);
   const [form, setForm] = useState<RuntimeProviderConfigInput>({
-    provider: "openai_compatible",
-    model: "",
+    provider: "aliyun_bailian",
+    model: "qwen-plus",
     api_key: "",
-    base_url: DEFAULT_BASE_URLS.openai_compatible,
+    base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1",
     api_surface: "chat_completions",
   });
   const [busy, setBusy] = useState(false);
@@ -50,12 +77,13 @@ export function ProviderSettingsButton({ disabled, compact = false, onConfigured
     try {
       const next = await loadRuntimeProviderConfig();
       setStatus(next);
-      const provider = next.provider || "openai_compatible";
+      const provider = next.provider || "aliyun_bailian";
+      const preset = findPreset(provider);
       setForm({
         provider,
-        model: next.model || "",
+        model: next.model || preset.defaultModel,
         api_key: "",
-        base_url: next.base_url || DEFAULT_BASE_URLS[provider] || "",
+        base_url: next.base_url || preset.baseUrl,
         api_surface: next.api_surface || "chat_completions",
       });
     } catch (reason) {
@@ -99,12 +127,17 @@ export function ProviderSettingsButton({ disabled, compact = false, onConfigured
   }
 
   function changeProvider(provider: string) {
+    const preset = findPreset(provider);
     setForm((current) => ({
       ...current,
       provider,
-      base_url: DEFAULT_BASE_URLS[provider] || "",
+      model: preset.defaultModel,
+      base_url: preset.baseUrl,
     }));
   }
+
+  const selectedPreset = findPreset(form.provider);
+  const modelNeedsInput = !selectedPreset.defaultModel;
 
   return (
     <>
@@ -155,13 +188,22 @@ export function ProviderSettingsButton({ disabled, compact = false, onConfigured
             />
           </label>
           <label>
-            <Typography.Text strong>模型名称</Typography.Text>
+            <Typography.Text strong>模型名称 / 推理接入点 ID</Typography.Text>
             <Input
               value={form.model}
-              placeholder="例如：gpt-4.1-mini 或服务商提供的模型 ID"
+              placeholder={
+                form.provider === "volcengine_ark"
+                  ? "请输入方舟控制台中的模型或推理接入点 ID"
+                  : "请输入服务商提供的模型 ID"
+              }
               style={{ marginTop: 6 }}
               onChange={(event) => setForm((current) => ({ ...current, model: event.target.value }))}
             />
+            <Typography.Text type="secondary" style={{ display: "block", marginTop: 4 }}>
+              {modelNeedsInput
+                ? "该服务无法仅凭 API Key 确定模型，此项需要填写。"
+                : `已自动填入常用模型 ${selectedPreset.defaultModel}，如需使用其他模型可修改。`}
+            </Typography.Text>
           </label>
           <label>
             <Typography.Text strong>API Key</Typography.Text>
@@ -173,17 +215,18 @@ export function ProviderSettingsButton({ disabled, compact = false, onConfigured
               onChange={(event) => setForm((current) => ({ ...current, api_key: event.target.value }))}
             />
           </label>
-          {form.provider !== "openai" ? (
-            <label>
-              <Typography.Text strong>Base URL</Typography.Text>
-              <Input
-                value={form.base_url}
-                placeholder="https://provider.example/v1"
-                style={{ marginTop: 6 }}
-                onChange={(event) => setForm((current) => ({ ...current, base_url: event.target.value }))}
-              />
-            </label>
-          ) : null}
+          <label>
+            <Typography.Text strong>接口地址</Typography.Text>
+            <Input
+              value={form.base_url}
+              placeholder="https://provider.example/v1"
+              style={{ marginTop: 6 }}
+              onChange={(event) => setForm((current) => ({ ...current, base_url: event.target.value }))}
+            />
+            <Typography.Text type="secondary" style={{ display: "block", marginTop: 4 }}>
+              国内平台已自动填写，通常无需修改。
+            </Typography.Text>
+          </label>
         </Space>
       </Modal>
     </>
