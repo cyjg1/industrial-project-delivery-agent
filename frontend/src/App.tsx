@@ -26,8 +26,11 @@ import { openingMessage } from "./lib/ui";
 import { lastAgentMessage, mergeToolStep, panelView, rowsToChatMessages } from "./lib/conversationUi";
 import type { ConversationSession, IngestionInputKind, SwitchableUser, Workspace } from "./types";
 function initialActorId() {
-  const stored = window.localStorage.getItem("project-agent-actor-id") || "u_pmo";
-  const actorId = stored === "u_pm" ? "u_pmo" : stored;
+  // The competition build shares localhost storage with any older local build.
+  // Always enter through the synthetic PMO actor so a stale private actor ID
+  // cannot prevent the public demo from booting. Role switching still works
+  // after the workspace has loaded.
+  const actorId = "u_pmo";
   setCurrentActorId(actorId);
   return actorId;
 }
