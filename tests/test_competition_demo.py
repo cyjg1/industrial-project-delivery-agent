@@ -24,6 +24,18 @@ class CompetitionDemoTest(unittest.TestCase):
             second = initialize_demo(tmpdir)
             with TestClient(create_app(tmpdir)) as client:
                 response = client.get("/api/workspace", headers={"X-Actor-Id": "u_pmo"})
+                users = client.get(
+                    "/api/dev/switchable-users",
+                    headers={"X-Actor-Id": "u_pmo"},
+                ).json()["users"]
+                named_pmo_workspaces = [
+                    client.get(
+                        "/api/workspace",
+                        headers={"X-Actor-Id": user["user_id"]},
+                    ).json()
+                    for user in users
+                    if user["role"] == "pmo"
+                ]
 
             self.assertTrue(first["initialized"])
             self.assertTrue(first["synthetic"])
@@ -32,6 +44,11 @@ class CompetitionDemoTest(unittest.TestCase):
             payload = response.json()
             self.assertIn("星河钢铁协同平台演示项目", str(payload))
             self.assertIn("synthetic_demo", str(payload))
+            self.assertEqual(len(payload["confirmation_cards"]), 3)
+            self.assertTrue(named_pmo_workspaces)
+            self.assertTrue(
+                all(len(workspace["confirmation_cards"]) == 3 for workspace in named_pmo_workspaces)
+            )
 
     def test_runtime_config_api_never_echoes_api_key(self):
         secret = "judge-owned-secret-value"

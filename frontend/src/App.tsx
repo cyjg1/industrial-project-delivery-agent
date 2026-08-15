@@ -141,9 +141,10 @@ export default function App() {
   useIngestionPolling({ workspace, actorId: currentActorId, refresh: refreshWorkspace, onError: setError });
 
   const latestAgent = useMemo(() => lastAgentMessage(messages), [messages]);
-  const notificationCount = workspace
-    ? workspace.confirmation_cards.length + workspace.daily_brief.notification_count
-    : 0;
+  // The review badge must describe the queue it opens. Daily-brief alerts also
+  // include schedule and decision reminders, so adding that count made the
+  // badge disagree with the actual confirmation cards.
+  const notificationCount = workspace?.confirmation_cards.length ?? 0;
 
   async function openSession(sessionId: string) {
     const requestActorId = currentActorIdRef.current;

@@ -64,7 +64,10 @@ def build_human_review_workspace(
     is_concrete_person = bool(
         actor and any(person.person_id == actor.id for person in people_asset.people)
     )
-    if is_concrete_person:
+    # A concrete person normally gets a person-scoped dashboard. PMO is the
+    # exception: selecting a named PMO reviewer must preserve the project-wide
+    # review queue instead of narrowing it to items that mention that person.
+    if is_concrete_person and access["view_mode"] != "pmo":
         access["capabilities"]["cross_person_load"] = True
         access["capabilities"]["progress_dashboard"] = True
         dashboard_items = [
