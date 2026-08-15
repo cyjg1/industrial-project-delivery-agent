@@ -9,6 +9,7 @@ type QuickStartCardsProps = {
   canReview: boolean;
   onViewChange: (view: ActiveView) => void;
   onMeetingFilesSelected: (files: File[]) => void;
+  readOnly?: boolean;
 };
 
 type QuickStartCard = {
@@ -24,6 +25,7 @@ export function QuickStartCards({
   canReview,
   onViewChange,
   onMeetingFilesSelected,
+  readOnly = false,
 }: QuickStartCardsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -31,13 +33,13 @@ export function QuickStartCards({
     fileInputRef.current?.click();
   }
 
-  const cards = buildCards(workspace, { canViewProgress, canReview }, onViewChange, openMeetingUpload);
+  const cards = buildCards(workspace, { canViewProgress, canReview }, onViewChange, openMeetingUpload, readOnly);
   if (!cards.length) return null;
 
   return (
     <section className="quick-start" aria-label="快捷入口">
       <span className="quick-start-head">可以先从这几件事开始</span>
-      <input
+      {!readOnly ? <input
         ref={fileInputRef}
         className="visually-hidden-input"
         type="file"
@@ -48,7 +50,7 @@ export function QuickStartCards({
           if (files.length) onMeetingFilesSelected(files);
           event.target.value = "";
         }}
-      />
+      /> : null}
       <div className="quick-start-grid">
         {cards.map((card) => (
           <button key={card.key} type="button" className="quick-start-card" onClick={card.onSelect}>
@@ -69,6 +71,7 @@ function buildCards(
   gates: { canViewProgress: boolean; canReview: boolean },
   onViewChange: (view: ActiveView) => void,
   focusComposer: () => void,
+  readOnly: boolean,
 ): QuickStartCard[] {
   const dashboard = workspace.progress_dashboard.summary;
   const memory = workspace.memory;
@@ -90,7 +93,7 @@ function buildCards(
     cards.push(reviewCount > 0
       ? {
           key: "review",
-          title: "处理待确认候选",
+          title: readOnly ? "查看待确认候选" : "处理待确认候选",
           detail: `待确认 ${reviewCount} 条 · 确认后才会进入正式任务与三清单`,
           onSelect: () => onViewChange("review"),
         }
@@ -102,12 +105,14 @@ function buildCards(
         });
   }
 
-  cards.push({
-    key: "upload",
-    title: "上传会议纪要",
-    detail: `已归档 ${sourceTotal} 份 · 原始转写待补 ${workspace.inputs.source_counts.raw_pending} 份`,
-    onSelect: focusComposer,
-  });
+  if (!readOnly) {
+    cards.push({
+      key: "upload",
+      title: "上传会议纪要",
+      detail: `已归档 ${sourceTotal} 份 · 原始转写待补 ${workspace.inputs.source_counts.raw_pending} 份`,
+      onSelect: focusComposer,
+    });
+  }
 
   cards.push({
     key: "knowledge",

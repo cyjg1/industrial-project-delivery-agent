@@ -19,8 +19,10 @@ import type {
 } from "../types";
 import { validateWorkspacePayload } from "./workspaceValidation";
 import { parseSseEvent, SseReplayCursor, type ParsedSseEvent } from "./sse";
+import { staticDemoRequest } from "./staticDemo";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "";
+export const isStaticDemo = import.meta.env.VITE_STATIC_DEMO === "true";
 const DEFAULT_ACTOR_ID = "u_pmo";
 let currentActorId = DEFAULT_ACTOR_ID;
 
@@ -46,6 +48,7 @@ export type ThreeListPayload = {
 };
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
+  if (isStaticDemo) return staticDemoRequest<T>(path, options, currentActorId);
   const isFormData = options?.body instanceof FormData;
   const headers = {
     "X-Actor-Id": currentActorId,

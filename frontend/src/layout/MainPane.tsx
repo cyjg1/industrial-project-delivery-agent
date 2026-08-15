@@ -1,6 +1,7 @@
 import { SunOutlined, UserSwitchOutlined } from "@ant-design/icons";
 import { Button, Select, Tooltip } from "antd";
 import type { StreamConnectionState } from "../api/client";
+import { isStaticDemo } from "../api/client";
 import { MessageList } from "../chat/MessageList";
 import { ProviderSettingsButton } from "../chat/ProviderSettingsButton";
 import { QuickStartCards } from "../chat/QuickStartCards";
@@ -105,9 +106,9 @@ export function MainPane({
           </span>
         </div>
         <div className="main-header-actions">
-          <ProviderSettingsButton disabled={loading} onConfigured={onProviderConfigured} />
+          {!isStaticDemo ? <ProviderSettingsButton disabled={loading} onConfigured={onProviderConfigured} /> : null}
           {canGenerateBrief ? (
-            <Button type="primary" icon={<SunOutlined />} onClick={onGenerateBrief} loading={loading}>
+            <Button type="primary" icon={<SunOutlined />} onClick={onGenerateBrief} loading={loading} disabled={isStaticDemo}>
               生成晨报
             </Button>
           ) : null}
@@ -147,7 +148,7 @@ export function MainPane({
       </header>
 
       <div className="main-status-line">
-        <Tooltip title={statusText}><span>{statusText}</span></Tooltip>
+        <Tooltip title={statusText}><span>{isStaticDemo ? `只读演示 · ${statusText}` : statusText}</span></Tooltip>
       </div>
 
       {effectiveView === "files" ? (
@@ -205,6 +206,7 @@ export function MainPane({
                 workspace={workspace}
                 canViewProgress={canViewProgressDashboard}
                 canReview={canReview}
+                readOnly={isStaticDemo}
                 onViewChange={onViewChange}
                 onMeetingFilesSelected={(files) => {
                   const merged = new Map(
@@ -219,7 +221,11 @@ export function MainPane({
                 }}
               />
             ) : null}
-            <SenderBar
+            {isStaticDemo ? (
+              <div className="static-demo-notice" role="note">
+                当前为 GitHub Pages 只读演示：可浏览全部合成项目数据，新增、修改、上传及 AI 对话均已关闭。
+              </div>
+            ) : <SenderBar
               selectedFiles={selectedFiles}
               inputKind={attachmentInputKind}
               selectedModel={selectedModel}
@@ -232,7 +238,7 @@ export function MainPane({
               onModelChange={onModelChange}
               onProviderConfigured={onProviderConfigured}
               onSend={onSend}
-            />
+            />}
           </section>
         </ErrorBoundary>
       )}

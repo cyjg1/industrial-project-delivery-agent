@@ -2,6 +2,7 @@ import { MenuFoldOutlined, MenuUnfoldOutlined, MoreOutlined, PlusOutlined } from
 import { Avatar, Button, Collapse, Dropdown, Modal, Tooltip, Typography } from "antd";
 import { Conversations } from "@ant-design/x";
 import type { ConversationSession, Workspace } from "../types";
+import { isStaticDemo } from "../api/client";
 
 type ProjectListPaneProps = {
   workspace: Workspace;
@@ -54,7 +55,7 @@ export function ProjectListPane({
   const owner = workspace.people_workspace.people[0]?.name || "负责人待确认";
   const activeSessions = sessions.filter((session) => !session.archived);
   const archivedSessions = sessions.filter((session) => session.archived);
-  const canArchiveProject = ["pm", "pmo"].includes(workspace.access.role);
+  const canArchiveProject = !isStaticDemo && ["pm", "pmo"].includes(workspace.access.role);
   const projectItems = [
     {
       key: workspace.milestone_control.plan.milestone_id || "current-project",
@@ -99,9 +100,9 @@ export function ProjectListPane({
         <div className="pane-title-row">
           <Typography.Title level={3}>全部项目</Typography.Title>
           <div className="pane-title-actions">
-            <Tooltip title="新建会话">
+            {!isStaticDemo ? <Tooltip title="新建会话">
               <Button type="text" icon={<PlusOutlined />} aria-label="新建会话" onClick={onNewSession} />
-            </Tooltip>
+            </Tooltip> : null}
             <Tooltip title="收起列表">
               <Button
                 type="text"
